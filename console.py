@@ -129,7 +129,7 @@ class HBNBCommand(cmd.Cmd):
             key_name, value_to_insert = attribute[0], attribute[1]
             #print(f"key {key_name}")
             #print(f"value {value_to_insert}")
-            if key_name == 'name' or ('_id' in key_name):
+            if key_name == 'name' or 'description' or ('_id' in key_name):
                 value_to_insert = value_to_insert[1:-1]
                 value_to_insert = value_to_insert.replace('_', ' ')
                 # if "\"" in value_to_insert:
