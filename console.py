@@ -134,10 +134,6 @@ class HBNBCommand(cmd.Cmd):
                 value_to_insert = value_to_insert.replace('_', ' ')
                 # if "\"" in value_to_insert:
                    # value_to_insert = value_to_insert.replace('\"', '\\\"')
-                if '.' in value_to_insert:
-                    value_to_insert = float(value_to_insert)
-                else:
-                    value_to_insert = int(value_to_insert)
             dictionary_of_arguments[key_name] = value_to_insert
         new_instance = HBNBCommand.classes[args_auxiliar[0]](**dictionary_of_arguments)
         print(new_instance.id)
