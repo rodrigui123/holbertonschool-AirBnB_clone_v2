@@ -40,11 +40,8 @@ class DBStorage:
                 key_auxiliar = str(cls) + '.' + object.id
                 final_dictionary[key_auxiliar] = object.to_dict()
         else:
-            print("3333333333333333333333333")
             for class_aux in classes.keys():
-                print("444444444444444444444444444444444444")
                 for object in self.__session.query(classes[class_aux]):
-                    print("555555555555555555555555555")
                     key_auxiliar = str(class_aux) + '.' + object.id
                     final_dictionary[key_auxiliar] = object.to_dict()
                     print(final_dictionary)
