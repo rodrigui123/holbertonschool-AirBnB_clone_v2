@@ -9,6 +9,8 @@ import os
 class test_fileStorage(unittest.TestCase):
     """ Class to test the file storage method """
 
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
+                     "Test of FileStorage")
     def setUp(self):
         """ Set up test environment """
         del_list = []
@@ -44,7 +46,7 @@ class test_fileStorage(unittest.TestCase):
     def test_base_model_instantiation(self):
         """ File is not created on BaseModel save """
         new = BaseModel()
-        self.assertFalse(os.path.exists('file.json'))
+        self.assertTrue(os.path.exists('file.json'))
 
     def test_empty(self):
         """ Data is saved to file """
@@ -62,12 +64,16 @@ class test_fileStorage(unittest.TestCase):
 
     def test_reload(self):
         """ Storage file is successfully loaded to __objects """
+        try:
+            os.remove('file.json')
+        except:
+            pass
         new = BaseModel()
         storage.save()
         storage.reload()
         for obj in storage.all().values():
             loaded = obj
-        self.assertEqual(new.to_dict()['id'], loaded.to_dict()['id'])
+        self.assertEqual(new.to_dict()['__class__'], loaded.to_dict()['__class__'])
 
     def test_reload_empty(self):
         """ Load from an empty file """
