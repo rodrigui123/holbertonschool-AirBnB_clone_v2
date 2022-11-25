@@ -4,7 +4,6 @@ import json
 from os import getenv
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, scoped_session
-from models.base_model import Base, BaseModel
 
 
 class DBStorage:
@@ -68,6 +67,7 @@ class DBStorage:
         from models.city import City
         from models.amenity import Amenity
         from models.review import Review
+        from models.base_model import Base
 
         classes = {
                     'BaseModel': BaseModel, 'User': User, 'Place': Place,

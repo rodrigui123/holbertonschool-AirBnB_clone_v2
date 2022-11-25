@@ -3,8 +3,6 @@
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String
 from sqlalchemy.orm import relationship
-from models.city import City
-from models.__init__ import storage
 from os import getenv
 
 
@@ -19,6 +17,8 @@ class State(BaseModel, Base):
     else:
         @property 
         def cities(self):
+            """ For FileStorage """
+            from models.__init__ import storage
             list_of_cities = []
             for value_city in storage.all().values():
                 if value_city['state_id'] == State.id:
