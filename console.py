@@ -127,10 +127,9 @@ class HBNBCommand(cmd.Cmd):
         for attribute in args_auxiliar[1:]:
             attribute = attribute.split('=')
             key_name, value_to_insert = attribute[0], attribute[1]
-            #print(f"key {key_name}")
-            #print(f"value {value_to_insert}")
-            if key_name == 'name' or ('_id' in key_name):
-                value_to_insert = value_to_insert[1:-1]
+            if (value_to_insert[0] == '\"' and value_to_insert[-1] == '\"') or ('_id' in key_name):
+            #    value_to_insert = value_to_insert[1:-1]
+                value_to_insert = value_to_insert.replace('\"', '')
                 value_to_insert = value_to_insert.replace('_', ' ')
                 # if "\"" in value_to_insert:
                    # value_to_insert = value_to_insert.replace('\"', '\\\"')
