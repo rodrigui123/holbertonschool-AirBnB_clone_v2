@@ -2,11 +2,18 @@
 """ Place Module for HBNB project """
 from models.base_model import BaseModel, Base
 from sqlalchemy import Column, String, INTEGER, FLOAT, ForeignKey
+from sqlalchemy.orm import relationship
+from os import getenv
 
 class Place(BaseModel, Base):
     """ A place to stay """
+    __tablename__ = 'place_amenity'
+    metadata = Base.metadata
+    place_id = Column(String(60), ForeignKey('places.id'), primary_key=True, nullable=False)
+    amenity_id = Column(String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False)
+
     __tablename__ = 'places'
-    
+
     city_id = Column(String(60), ForeignKey('cities.id'), nullable=False)
     user_id = Column(String(60), ForeignKey('users.id'), nullable=False)
     name = Column(String(128), nullable=False)
@@ -17,4 +24,8 @@ class Place(BaseModel, Base):
     price_by_night = Column(INTEGER, default=0, nullable=False)
     latitude = Column(FLOAT, nullable=True)
     longitude = Column(FLOAT, nullable=True)
-    #amenity_ids = []
+    if getenv('HBNB_TYPE_STORAGE') == 'db' or\
+        getenv('HBNB_TYPE_STORAGE') == 'test':
+        amenities = relationship("Amenity", secondary='place_amenity', viewonly=False, backref='places')
+    else:
+        pass

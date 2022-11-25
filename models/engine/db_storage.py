@@ -20,14 +20,13 @@ class DBStorage:
             MetaData.drop_all(self.__engine)
 
     def all(self, cls=None):
-        from models.base_model import BaseModel
+
         from models.user import User
         from models.place import Place
         from models.state import State
         from models.city import City
         from models.amenity import Amenity
         from models.review import Review
-
         classes = {
                     'State': State, 'User': User, 'Place': Place,
                     'City': City, 'Amenity': Amenity,
@@ -44,7 +43,7 @@ class DBStorage:
                 for object in self.__session.query(classes[class_aux]):
                     key_auxiliar = str(class_aux) + '.' + object.id
                     final_dictionary[key_auxiliar] = object.to_dict()
-                    print(final_dictionary)
+                    #print(final_dictionary)
         return final_dictionary
 
     def new(self, obj):
