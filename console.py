@@ -2,7 +2,7 @@
 """ Console Module """
 import cmd
 import sys
-from models.base_model import BaseModel
+from models.base_model import BaseModel, Base
 from models.__init__ import storage
 from models.user import User
 from models.place import Place
@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] =='}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -127,12 +127,18 @@ class HBNBCommand(cmd.Cmd):
         for attribute in args_auxiliar[1:]:
             attribute = attribute.split('=')
             key_name, value_to_insert = attribute[0], attribute[1]
-            print(f"key {value_to_insert}")
-            if value_to_insert[0] == '\"' and value_to_insert[-1] == '\"':
+            #print(f"key {key_name}")
+            #print(f"value {value_to_insert}")
+            if key_name == 'name' or ('_id' in key_name):
                 value_to_insert = value_to_insert[1:-1]
                 value_to_insert = value_to_insert.replace('_', ' ')
                 # if "\"" in value_to_insert:
                    # value_to_insert = value_to_insert.replace('\"', '\\\"')
+            #else:
+            #    if '.' in value_to_insert:
+            #        value_to_insert = float(value_to_insert)
+            #    else:
+            #        value_to_insert = int(value_to_insert)
             dictionary_of_arguments[key_name] = value_to_insert
         new_instance = HBNBCommand.classes[args_auxiliar[0]](**dictionary_of_arguments)
         print(new_instance.id)
@@ -218,11 +224,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(args).items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -235,7 +241,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k, v in storage.all().items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
