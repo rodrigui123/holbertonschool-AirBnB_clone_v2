@@ -38,12 +38,12 @@ class DBStorage:
         if cls:
             for object in self.__session.query(classes[str(cls)]):
                 key_auxiliar = str(cls) + '.' + object.id
-                final_dictionary[key_auxiliar] = object.to_dict()
+                final_dictionary[key_auxiliar] = object
         else:
             for class_aux in classes.keys():
                 for object in self.__session.query(classes[class_aux]).all():
                     key_auxiliar = str(class_aux) + '.' + object.id
-                    final_dictionary[key_auxiliar] = object.to_dict()
+                    final_dictionary[key_auxiliar] = object
         return final_dictionary
         # if cls:
         #     if type(cls) == str:
