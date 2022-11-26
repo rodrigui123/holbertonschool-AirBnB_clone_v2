@@ -28,7 +28,7 @@ class Place(BaseModel, Base):
     amenity_ids = []
     if getenv('HBNB_TYPE_STORAGE') == 'db' or\
         getenv('HBNB_TYPE_STORAGE') == 'test':
-        amenities = relationship("Amenity", secondary='place_amenity', viewonly=False, backref='places')
+        amenities = relationship("Amenity", secondary='place_amenity', viewonly=False)
         reviews = relationship("Review", backref="places", cascade="delete")
 
     else:
