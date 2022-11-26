@@ -5,9 +5,11 @@ from sqlalchemy import Column, String, INTEGER, FLOAT, ForeignKey, Table
 from sqlalchemy.orm import relationship
 from os import getenv
 
+
+# asocitaion table
 association_table = Table('place_amenity', Base.metadata,
-                          Column('places_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
-                          Column('amenities_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False))
+                          Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
+                          Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False))
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -26,7 +28,7 @@ class Place(BaseModel, Base):
     amenity_ids = []
     if getenv('HBNB_TYPE_STORAGE') == 'db' or\
         getenv('HBNB_TYPE_STORAGE') == 'test':
-        amenities = relationship("Amenity", secondary='place_amenity', viewonly=False, backref='places')
+        amenities = relationship("Amenity", secondary='place_amenity', viewonly=False)
         reviews = relationship("Review", backref="places", cascade="delete")
 
     else:
