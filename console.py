@@ -115,31 +115,24 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        args_auxiliar= args.split()
+        args_auxiliar = args.split()
         if not args:
             print("** class name missing **")
             return
         elif args_auxiliar[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        #storage.save()
         dictionary_of_arguments = {}
         for attribute in args_auxiliar[1:]:
             attribute = attribute.split('=')
             key_name, value_to_insert = attribute[0], attribute[1]
-            if (value_to_insert[0] == '\"' and value_to_insert[-1] == '\"') or ('_id' in key_name):
-            #    value_to_insert = value_to_insert[1:-1]
+            if (value_to_insert[0] == '\"' and
+               value_to_insert[-1] == '\"') or ('_id' in key_name):
                 value_to_insert = value_to_insert.replace('\"', '')
                 value_to_insert = value_to_insert.replace('_', ' ')
-                # if "\"" in value_to_insert:
-                   # value_to_insert = value_to_insert.replace('\"', '\\\"')
-            #else:
-            #    if '.' in value_to_insert:
-            #        value_to_insert = float(value_to_insert)
-            #    else:
-            #        value_to_insert = int(value_to_insert)
             dictionary_of_arguments[key_name] = value_to_insert
-        new_instance = HBNBCommand.classes[args_auxiliar[0]](**dictionary_of_arguments)
+        new_instance = \
+            HBNBCommand.classes[args_auxiliar[0]](**dictionary_of_arguments)
         print(new_instance.id)
         storage.save()
 
@@ -204,7 +197,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -336,6 +329,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
