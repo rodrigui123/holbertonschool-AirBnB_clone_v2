@@ -114,7 +114,7 @@ class test_fileStorage(unittest.TestCase):
     def test_create_State(self):
         from models.state import State
         state = State(name='California')
-        self.assertEqual(state.name,'California')
+        self.assertEqual(type(state.name),str)
 
     def test_create_City(self):
         from models.state import State
