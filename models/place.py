@@ -38,7 +38,7 @@ class Place(BaseModel, Base):
             list_auxiliar = []
             from models.__init__ import storage
             from models.amenity import Amenity
-            for amenity in storage.all(Amenity):
+            for amenity in storage.all(Amenity).values():
                 if amenity.id in self.amenity_ids:
                     list_auxiliar.append(amenity)
             return list_auxiliar
