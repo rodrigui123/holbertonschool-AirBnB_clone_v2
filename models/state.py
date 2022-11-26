@@ -12,10 +12,10 @@ class State(BaseModel, Base):
 
     name = Column(String(128), nullable=False)
     if getenv('HBNB_TYPE_STORAGE') == 'db' or\
-        getenv('HBNB_TYPE_STORAGE') == 'test':
+       getenv('HBNB_TYPE_STORAGE') == 'test':
         cities = relationship("City", backref="state", cascade="delete")
     else:
-        @property 
+        @property
         def cities(self):
             """ For FileStorage """
             from models.__init__ import storage
@@ -24,4 +24,3 @@ class State(BaseModel, Base):
                 if value_city['state_id'] == State.id:
                     list_of_cities.append(str(value_city))
             return list_of_cities
-        

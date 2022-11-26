@@ -8,8 +8,13 @@ from os import getenv
 
 # asocitaion table
 association_table = Table('place_amenity', Base.metadata,
-                          Column('place_id', String(60), ForeignKey('places.id'), primary_key=True, nullable=False),
-                          Column('amenity_id', String(60), ForeignKey('amenities.id'), primary_key=True, nullable=False))
+                          Column('place_id', String(60),
+                                 ForeignKey('places.id'),
+                                 primary_key=True, nullable=False),
+                          Column('amenity_id', String(60),
+                                 ForeignKey('amenities.id'),
+                                 primary_key=True, nullable=False))
+
 
 class Place(BaseModel, Base):
     """ A place to stay """
@@ -27,8 +32,9 @@ class Place(BaseModel, Base):
     longitude = Column(FLOAT, nullable=True)
     amenity_ids = []
     if getenv('HBNB_TYPE_STORAGE') == 'db' or\
-        getenv('HBNB_TYPE_STORAGE') == 'test':
-        amenities = relationship("Amenity", secondary='place_amenity', viewonly=False)
+       getenv('HBNB_TYPE_STORAGE') == 'test':
+        amenities = relationship("Amenity", secondary='place_amenity',
+                                 viewonly=False)
         reviews = relationship("Review", backref="places", cascade="delete")
 
     else:
@@ -42,13 +48,13 @@ class Place(BaseModel, Base):
                 if amenity.id in self.amenity_ids:
                     list_auxiliar.append(amenity)
             return list_auxiliar
-        
+
         @amenities.setter
         def amenities(self, value):
             from models.amenity import Amenity
             if type(value) == Amenity:
                 self.amenity_ids(value.id)
-        
+
         @property
         def reviews(self):
             """ list of reviews """
