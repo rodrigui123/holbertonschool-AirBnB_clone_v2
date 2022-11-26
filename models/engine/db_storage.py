@@ -45,18 +45,6 @@ class DBStorage:
                     key_auxiliar = str(class_aux) + '.' + object.id
                     final_dictionary[key_auxiliar] = object
         return final_dictionary
-        # if cls:
-        #     if type(cls) == str:
-        #         cls = eval(cls)
-        #     objs = self.__session.query(cls)
-        # else:
-        #     objs = self.__session.query(State).all()
-        #     objs.extend(self.__session.query(City).all())
-        #     objs.extend(self.__session.query(User).all())
-        #     objs.extend(self.__session.query(Place).all())
-        #     objs.extend(self.__session.query(Review).all())
-        #     objs.extend(self.__session.query(Amenity).all())
-        # return {"{}.{}".format(type(o).__name__, o.id): o for o in objs}
 
     def new(self, obj):
         """
