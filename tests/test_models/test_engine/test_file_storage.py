@@ -1,16 +1,13 @@
 #!/usr/bin/python3
 """ Module for testing file storage"""
-import unittest
+import unittest, os
 from models.base_model import BaseModel
 from models import storage
-import os
 
 
 class test_fileStorage(unittest.TestCase):
     """ Class to test the file storage method """
 
-    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db',
-                     "Test of FileStorage")
     def setUp(self):
         """ Set up test environment """
         del_list = []
@@ -113,3 +110,21 @@ class test_fileStorage(unittest.TestCase):
         from models.engine.file_storage import FileStorage
         print(type(storage))
         self.assertEqual(type(storage), FileStorage)
+
+    def test_create_State(self):
+        from models.state import State
+        state = State(name='California')
+        self.assertEqual(state.name,'California')
+
+    def test_create_City(self):
+        from models.state import State
+        from models.city import City
+        state = State(name='California')
+        city = City(name="Los Angeles", state_id=state.id)
+        self.assertEqual(city.name,'Los Angeles')
+
+    def test_create_User(self):
+        from models.user import User
+        user = User(email="example@help", password="pwd",
+                    first_name="GG", last_name="HH")
+        self.assertEqual(user.last_name,'HH')
