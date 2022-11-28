@@ -73,7 +73,7 @@ class HBNBCommand(cmd.Cmd):
                 pline = pline[2].strip()  # pline is now str
                 if pline:
                     # check for *args or **kwargs
-                    if pline[0] == '{' and pline[-1] =='}'\
+                    if pline[0] == '{' and pline[-1] == '}'\
                             and type(eval(pline)) is dict:
                         _args = pline
                     else:
@@ -115,26 +115,24 @@ class HBNBCommand(cmd.Cmd):
 
     def do_create(self, args):
         """ Create an object of any class"""
-        args_auxiliar= args.split()
+        args_auxiliar = args.split()
         if not args:
             print("** class name missing **")
             return
         elif args_auxiliar[0] not in HBNBCommand.classes:
             print("** class doesn't exist **")
             return
-        #storage.save()
         dictionary_of_arguments = {}
         for attribute in args_auxiliar[1:]:
             attribute = attribute.split('=')
             key_name, value_to_insert = attribute[0], attribute[1]
-            print(f"key {value_to_insert}")
-            if value_to_insert[0] == '\"' and value_to_insert[-1] == '\"':
-                value_to_insert = value_to_insert[1:-1]
+            if (value_to_insert[0] == '\"' and
+               value_to_insert[-1] == '\"') or ('_id' in key_name):
+                value_to_insert = value_to_insert.replace('\"', '')
                 value_to_insert = value_to_insert.replace('_', ' ')
-                # if "\"" in value_to_insert:
-                   # value_to_insert = value_to_insert.replace('\"', '\\\"')
             dictionary_of_arguments[key_name] = value_to_insert
-        new_instance = HBNBCommand.classes[args_auxiliar[0]](**dictionary_of_arguments)
+        new_instance = \
+            HBNBCommand.classes[args_auxiliar[0]](**dictionary_of_arguments)
         print(new_instance.id)
         storage.save()
 
@@ -199,7 +197,7 @@ class HBNBCommand(cmd.Cmd):
         key = c_name + "." + c_id
 
         try:
-            del(storage.all()[key])
+            del (storage.all()[key])
             storage.save()
         except KeyError:
             print("** no instance found **")
@@ -218,11 +216,11 @@ class HBNBCommand(cmd.Cmd):
             if args not in HBNBCommand.classes:
                 print("** class doesn't exist **")
                 return
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all(args).items():
                 if k.split('.')[0] == args:
                     print_list.append(str(v))
         else:
-            for k, v in storage._FileStorage__objects.items():
+            for k, v in storage.all().items():
                 print_list.append(str(v))
 
         print(print_list)
@@ -235,7 +233,7 @@ class HBNBCommand(cmd.Cmd):
     def do_count(self, args):
         """Count current number of class instances"""
         count = 0
-        for k, v in storage._FileStorage__objects.items():
+        for k, v in storage.all().items():
             if args == k.split('.')[0]:
                 count += 1
         print(count)
@@ -331,6 +329,7 @@ class HBNBCommand(cmd.Cmd):
         """ Help information for the update class """
         print("Updates an object with new information")
         print("Usage: update <className> <id> <attName> <attVal>\n")
+
 
 if __name__ == "__main__":
     HBNBCommand().cmdloop()
