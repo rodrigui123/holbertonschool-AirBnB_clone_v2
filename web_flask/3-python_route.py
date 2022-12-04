@@ -22,7 +22,6 @@ def c(text):
     return "C " + var
 
 
-
 @app.route('/python', strict_slashes=False)
 @app.route('/python/<text>', strict_slashes=False)
 def py(text="is cool"):
