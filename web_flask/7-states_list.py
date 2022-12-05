@@ -1,26 +1,26 @@
 #!/usr/bin/python3
-"""Python Module"""
-from models import storage
-from flask import Flask, render_template
+""" script that starts a Flask web application"""
 
+from flask import Flask
+from flask import render_template
+from flask import request
+from models import storage
 
 app = Flask(__name__)
-# create Flask obj referencing self
-app.url_map.strict_slashes = False
+
+
+@app.route('/states_list', strict_slashes=False)
+def name_id_page():
+    from models.state import State
+    print("before")
+    states = storage.all(State).values()
+    return render_template('7-states_list.html', states=states)
 
 
 @app.teardown_appcontext
-def tear_down(exit):
-    #  removes current SQLAlchemy Session
+def remove(exception):
     storage.close()
 
 
-@app.route('/states_list')
-def list_states():
-    #  renders + shows states
-    return render_template('7-states_list.html', states=storage.all('State'))
-
-
-# check that's the route + run the app
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.run(host='0.0.0.0', port=5000)
